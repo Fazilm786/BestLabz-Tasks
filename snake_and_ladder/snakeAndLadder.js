@@ -1,181 +1,148 @@
 const prompt = require("prompt-sync")({ sigint: true });
-const player = prompt("Choose How Maney Players Playing This Game--> ")
-        // board---------------------
-let array=[]
-for (var i =0; i<100;i++){
+const how = prompt("Choose How Maney hows Playing This Game--> ")
+let array = []
+let player = []
+let times = []
+let winers =[]
+for(var i=0;i<100; i++){
     array[i]=i+1
 }
-console.log(array)
-        // players------------------------
-let winers=[]
-let players=[]
-for(var j=0; j<player ; j++){
-    players[j]=0
-}        
-// console.log(players)
-function startGame(){
-    let  random = Math.floor(Math.random()*6)+1
-    console.log('Your Dies Number is 🎲 ' ,random)
-    if(random===1){
-        console.log('winer')
-        startGame()
-    }
-    else{
-    }
+for(var j=0; j<how; j++){
+    player[j]=0
+    times[j]=0
+    winers[j]=0
 }
-startGame()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function playBoard(){
-    for(var k=0; k<players.length; k++){ 
+console.log(array)
+let die = 0
+function game(){
+    for(var k=0; k<how; k++){
         const prompt = require("prompt-sync")({ sigint: true });
         const simple = prompt(`PLAYER ${k+1} PRESS THE ENTER BUTTON --> to PLAY`)
-        function dies(){
-            // dies-----------------------
-            random = Math.floor(Math.random()*6)+1
-            console.log('Your Dies Number is 🎲 ' ,random)
-        }
-        if(dies() === 6){
-            if (random === 6 && players[k] !== 0){
-                players[k]+=6
-                dise()
+        function rotate(){
+            if (player[k]!==100){
+                random=Math.floor(Math.random()*6)+1
+                die=random
+                console.log('Player',k+1, 'dies number is 🎲',die)
+                times[k]+=1
             }
-            else{
-                dies()
+        } 
+        rotate()
+        function add(){
+            if (player[k]!==0 && player[k]+die<=100){
+                player[k]+=die
+                snakeAndladder()
             }
         }
-        if (random === 1 && players[k]===0 && players[k]+random <= 100){
-            console.log(`PLAYER ${k+1} -----------> start the game :)`)
-            dies()
-            players[k]+=1
-            console.log(players[k])
+        add()
+        if(player[k]===0 && die===1){  
+            player[k]+=die
+            console.log('player',k+1,'start the game 🏁')
+            rotate()
+            add()
+            snakeAndladder()
         }
-        if(random===6 && players[k] !== 0 && players[k]+random <= 100){
-            dies()
-            players[k]+=6
-            console.log(players[k])
+        if (die===1 || die===6 && player[k]!==100){
+            let l = 0
+            let m = 1
+            while(l<m){
+                if(die ===6 || die ===1 && player[k]!==100){
+                    if (die===1 && player[k]===0){
+                        player[k]+=die
+                        console.log('player',k+1,'start the game 🏁')
+                    }
+                    rotate()
+                    add()
+                    if (player[k]!==100){
+                        m++
+                    }
+                }
+                l++
+            }    
         }
-        if(random===1 && players[k] !== 0 && players[k]+random <= 100){
-            dies()
-            players[k]+=1
-            console.log(players[k])
+        function snakeAndladder(){
+            if (player[k]===array[3] || player[k]===array[8] || player[k]===array[19] || player[k]===array[27] || player[k]===array[39] || player[k]===array[50] || player[k]===array[62] || player[k]===array[70]){
+                lastValue=player[k]
+                if (player[k]===array[3]){
+                    player[k]+=10
+                }
+                if (player[k]===array[8]){
+                    player[k]+=22
+                }
+                if (player[k]===array[19]){
+                    player[k]+=18
+                }
+                if (player[k]===array[27]){
+                    player[k]+=56
+                }
+                if (player[k]===array[39]){
+                    player[k]+=19
+                }
+                if (player[k]===array[50]){
+                    player[k]+=16
+                }
+                if (player[k]===array[62]){
+                    player[k]+=18
+                }
+                if (player[k]===array[70]){
+                    player[k]+=20
+                }
+                console.log('THIS IS _____-LADDER-_____🦿🦿🦿🦿_____PLAYER MOVE',lastValue,'---TO---',player[k])
+                rotate()
+                add()
+            }
+            if (player[k]===array[16] || player[k]===array[53] || player[k]===array[61] || player[k]===array[63] || player[k]===array[86] || player[k]===array[92] || player[k]===array[94] || player[k]===array[98]){
+                lastValue=player[k]
+                if (player[k]===array[16]){
+                    player[k]-=10
+                }
+                if (player[k]===array[53]){
+                    player[k]-=20
+                }
+                if (player[k]===array[61]){
+                    player[k]-=43
+                }
+                if (player[k]===array[63]){
+                    player[k]-=4
+                }
+                if (player[k]===array[86]){
+                    player[k]-=63
+                }
+                if (player[k]===array[92]){
+                    player[k]-=20
+                }
+                if (player[k]===array[94]){
+                    player[k]-=20
+                }
+                if (player[k]===array[98]){
+                    player[k]-=21
+                }
+                console.log('THIS IS _____~SNAKE~_____🐍🐍🐍🐍_____PLAYER MOVE',lastValue,'~~~TO~~~',player[k])
+            }
         }
-        if(random === 6 || random === 1){
-                dies()
+        snakeAndladder()
+        console.log('Player',k+1,'TOTAL DISE NUMBER',times[k],'________---OVER ALL TOTAL---_______',player[k])
+        if (player[k]===100){
+            for (var q=0; q<how;q++){
+                if (winers[q]===k+1){
+                    break
+                }
+                else{
+                    if (winers[q]===0){
+                        winers[q]=k+1
+                        console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
+                        break
+                    }
+                }
+            }
         }
-        if(array[3]===players[k]){
-            console.log(players[k])
-            console.log(`This is LADDER player ${k+1} MOVE ${players[k]} TO /////////// 14`)
-            players[k]+=10
-            console.log(players[k])
+    }
+    for (var p = 0 ; p < how ; p++){
+        if(player[p]!==100){
+            game()
         }
-        if(array[8]===players[k]){
-            console.log(players[k]) 
-            console.log(`This is LADDER player ${k+1} MOVE ${players[k]} TO /////////// 31`)
-            players[k]+=22
-            console.log(players[k])
-        }
-        if(array[16]===players[k]){
-            console.log(players[k])
-            console.log(`This is SNAKE player ${k+1} MOVE ${players[k]} TO 🐍~~~~~~~~~~~🐍 7`)
-            players[k]-=10
-            console.log(players[k])
-        }
-        if (array[19]===players[k]){
-            console.log(players[k])
-            console.log(`This is LADDER player ${k+1} MOVE ${players[k]} TO /////////// 38`)
-            players[k]+=18
-            console.log(players[k])
-        }
-        if (array[27]===players[k]){
-            console.log(players[k])
-            console.log(`This is LADDER player ${k+1} MOVE ${players[k]} TO /////////// 84`)
-            players[k]+=56
-            console.log(players[k])
-        }
-        if (array[39]===players[k]){
-            console.log(players[k])
-            console.log(`This is LADDER player ${k+1} MOVE ${players[k]} TO /////////// 59`)
-            players[k]+=19
-            console.log(players[k])
-        }
-        if (array[50]===players[k]){
-            console.log(players[k])
-            console.log(`This is LADDER player ${k+1} MOVE ${players[k]} TO /////////// 67`)
-            players[k]+=16
-            console.log(players[k])
-        }
-        if (array[53]===players[k]){
-            console.log(players[k])
-            console.log(`This is SNAKE player ${k+1} MOVE ${players[k]} TO 🐍~~~~~~~~~~~🐍 34`)
-            players[k]-=20
-            console.log(players[k])
-        }
-        if (array[61]===players[k]){
-            console.log(players[k])
-            console.log(`This is SNAKE player ${k+1} MOVE ${players[k]} TO 🐍~~~~~~~~~~~🐍 19`)
-            players[k]-=43
-            console.log(players[k])
-        }
-        if (array[62]===players[k]){
-            console.log(players[k])
-            console.log(`This is LADDER player ${k+1} MOVE ${players[k]} TO /////////// 81`)
-            players[k]+=18
-            console.log(players[k])      
-        }
-        if (array[63]===players[k]){
-            console.log(players[k])
-            console.log(`This is SNAKE player ${k+1} MOVE ${players[k]} TO 🐍~~~~~~~~~~~🐍 60`)
-            players[k]-=4
-            console.log(players[k])
-        }
-        if (array[70]===players[k]){
-            console.log(players[k])
-            console.log(`This is LADDER player ${k+1} MOVE ${players[k]} TO /////////// 91`)
-            players[k]+=20
-            console.log(players[k])
-        }
-        if (array[86]===players[k]){
-            console.log(players[k])
-            console.log(`This is SNAKE player ${k+1} MOVE ${players[k]} TO 🐍~~~~~~~~~~~🐍 24`)
-            players[k]-=63
-            console.log(players[k])
-        }
-        if (array[92]===players[k]){
-            console.log(players[k])
-            console.log(`This is SNAKE player ${k+1} MOVE ${players[k]} TO 🐍~~~~~~~~~~~🐍 73`)
-            players[k]-=20
-            console.log(players[k])
-        }
-        if (array[94]===players[k]){
-            console.log(players[k])
-            console.log(`This is SNAKE player ${k+1} MOVE ${players[k]} TO 🐍~~~~~~~~~~~🐍 75`)
-            players[k]-=20
-            console.log(players[k])
-        }
-        if (array[98]===players[k]){
-            console.log(players[k])
-            console.log(`This is SNAKE player ${k+1} MOVE ${players[k]} TO 🐍~~~~~~~~~~~🐍 78`)
-            players[k]-=21
-            console.log(players[k])
-        }
-        if(players[k]!==0 && players[k]+random <= 100){
-                players[k]+=random
-                console.log(players[k],'🎈🎈')
-        }
-        console.log('Player',k+1,'score is',players[k])  
     } 
 }
+game()
+console.log('DICE COUNT :',times)
+console.log('WINERS LIST:',winers)
+console.log('PLAYER',winers[0],'WIN THE GAME 🏆')
